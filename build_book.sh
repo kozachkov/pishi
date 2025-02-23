@@ -1,7 +1,9 @@
 #!/bin/bash
 #set -x
 
-version=0.01
+version=0.02
+
+WORK_DIR=$1
 
 read -r -d '' help << 'END'
 build_book.sh -- работа с записями.txt как с единым целым.
@@ -28,7 +30,25 @@ while getopts ":hv" opt; do
   esac
 done
 
+check_work_dir() {
+    if [[ -z $WORK_DIR ]]; then
+        WORK_DIR='.'
+    fi
+
+    if [[ ! -d $WORK_DIR ]]; then
+        echo "'$WORK_DIR' не путь к записям!"
+        exit
+    fi
+}
+
+check_work_dir
+
 input_file="0_содержание.txt"
+
+if [[ ! -e "$input_file" ]]; then
+    echo "Описание содержания '$input_file' не найдено!"
+    exit 1
+fi
 
 output_file="output.txt"
 
