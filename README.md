@@ -11,7 +11,7 @@
 1. Скачать в нужное тебе расположение:
 
 ```bash
-/mesto$ git clone https://github.com/kmhl/latexnar.git`
+/mesto$ git clone https://github.com/kozachkov/pishi.git`
 ```
 
 2. Создать слабую ссылку на latexnar.sh:
