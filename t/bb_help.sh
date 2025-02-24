@@ -5,7 +5,7 @@ if [[ $PWD == */t ]]; then
     exit
 fi
 
-echo "1..3"
+echo "1..5"
 
 assert() {
     if [[ $1 == $2 ]]; then
@@ -27,3 +27,14 @@ assert "$RESULT" "$NOT_CONTENT_RESULT" "нет 0_содержание.txt (.)"
 
 RESULT=$(source build_book.sh)
 assert "$RESULT" "$NOT_CONTENT_RESULT" "нет 0_содержание.txt"
+
+HELP_RESULT="build_book.sh -- работа с записями.txt как с единым целым."
+
+RESULT=$(source build_book.sh -h)
+assert "$RESULT" "$HELP_RESULT" "показ справки"
+
+VERSION=0.03
+VERSION_RESULT="build_book.sh $VERSION"
+
+RESULT=$(source build_book.sh -v)
+assert "$RESULT" "$VERSION_RESULT" "показ выпуска"

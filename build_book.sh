@@ -1,28 +1,28 @@
 #!/bin/bash
 #set -x
 
-version=0.03
+VERSION=0.04
 
 SHOW_FILENAME=0
 
 WORK_DIR='.'
 
-read -r -d '' help << 'END'
+read -r -d '' HELP << 'END'
 build_book.sh -- работа с записями.txt как с единым целым.
 END
 
-read -r -d '' version_desc << END
-build_book.sh $version
+read -r -d '' VERSION_DESC << END
+build_book.sh $VERSION
 END
 
 while getopts ":hvsd:" opt; do
   case $opt in
     h)
-      echo $help
+      echo $HELP
       exit
       ;;
     v)
-      echo $version_desc
+      echo $VERSION_DESC
       exit
       ;;
     s)
