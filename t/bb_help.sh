@@ -5,17 +5,9 @@ if [[ $PWD == */t ]]; then
     exit
 fi
 
-echo "1..5"
+. _test.sh
 
-assert() {
-    if [[ $1 == $2 ]]; then
-        echo "ok - $3"
-    else
-        echo "not ok - $3"
-        echo "# Ожидал:  $2"
-        echo "# Получил: $1"
-    fi
-}
+echo "1..5"
 
 NOT_CONTENT_RESULT="Описание содержания '0_содержание.txt' не найдено!"
 
@@ -33,7 +25,7 @@ HELP_RESULT="build_book.sh -- работа с записями.txt как с е�
 RESULT=$(source build_book.sh -h)
 assert "$RESULT" "$HELP_RESULT" "показ справки"
 
-VERSION=0.03
+VERSION=0.04
 VERSION_RESULT="build_book.sh $VERSION"
 
 RESULT=$(source build_book.sh -v)
