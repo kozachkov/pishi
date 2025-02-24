@@ -35,3 +35,11 @@ $ pdflatex -shell-escape Main.tex
 # Открыть полученный .pdf любым просмотрщиком для них.
 $ evince Main.pdf
 ```
+
+## Разработка
+
+Запуск проверок:
+
+```
+make test
+```
