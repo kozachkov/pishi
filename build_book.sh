@@ -1,9 +1,11 @@
 #!/bin/bash
 #set -x
 
-version=0.02
+version=0.03
 
-WORK_DIR=$1
+SHOW_FILENAME=0
+
+WORK_DIR='.'
 
 read -r -d '' help << 'END'
 build_book.sh -- работа с записями.txt как с единым целым.
@@ -13,7 +15,7 @@ read -r -d '' version_desc << END
 build_book.sh $version
 END
 
-while getopts ":hv" opt; do
+while getopts ":hvsd:" opt; do
   case $opt in
     h)
       echo $help
@@ -22,6 +24,12 @@ while getopts ":hv" opt; do
     v)
       echo $version_desc
       exit
+      ;;
+    s)
+      SHOW_FILENAME=1
+      ;;
+    d)
+      WORK_DIR=$OPTARG
       ;;
     \?)
       echo "Ошибка: Недопустимая опция -$OPTARG"
@@ -72,7 +80,9 @@ while IFS= read -r filename; do
     file_path="$filename.txt"
 
     if [[ -f "$file_path" ]]; then
-        echo -e "[$filename]:\n" >> "$output_file"
+        if [[ $SHOW_FILENAME -eq 1 ]]; then
+            echo -e "[$filename]:\n" >> "$output_file"
+        fi
 
         cat "$file_path" >> "$output_file"
         echo "" >> "$output_file"
@@ -85,3 +95,5 @@ echo "Содержимое записей сохранено в $output_file"
 
 char_count=$(cut -d' ' -f1 - <<< $(wc -m $output_file))
 echo "Всего знаков: $char_count"
+
+exit

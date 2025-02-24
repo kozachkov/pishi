@@ -19,10 +19,10 @@ assert() {
 
 NOT_CONTENT_RESULT="Описание содержания '0_содержание.txt' не найдено!"
 
-RESULT=$(source build_book.sh asdf)
+RESULT=$(source build_book.sh -d asdf)
 assert "$RESULT" "'asdf' не путь к записям!" "asdf не путь"
 
-RESULT=$(source build_book.sh .)
+RESULT=$(source build_book.sh -d .)
 assert "$RESULT" "$NOT_CONTENT_RESULT" "нет 0_содержание.txt (.)"
 
 RESULT=$(source build_book.sh)
