@@ -1,0 +1,14 @@
+## Установка и настройка
+
+1. Скачать в нужное тебе расположение:
+
+```bash
+/mesto$ git clone https://github.com/kozachkov/pishi.git`
+```
+
+2. Создать слабую ссылку на latexnar.sh:
+
+```bash
+ln -s /mesto/latexnar.sh /usr/local/bin/latexnar
+ln -s /mesto/build_book.sh /usr/local/bin/build_book
+```

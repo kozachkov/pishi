@@ -1,11 +1,13 @@
 #!/bin/bash
 #set -x
 
-VERSION=0.04
+VERSION=0.05
 
 SHOW_FILENAME=0
 
 WORK_DIR='.'
+
+output_file="output.txt"
 
 read -r -d '' HELP << 'END'
 build_book.sh -- работа с записями.txt как с единым целым.
@@ -15,7 +17,7 @@ read -r -d '' VERSION_DESC << END
 build_book.sh $VERSION
 END
 
-while getopts ":hvsd:" opt; do
+while getopts ":hvsd:o:" opt; do
   case $opt in
     h)
       echo $HELP
@@ -31,8 +33,11 @@ while getopts ":hvsd:" opt; do
     d)
       WORK_DIR=$OPTARG
       ;;
+    o)
+      output_file=$OPTARG
+      ;;
     \?)
-      echo "Ошибка: Недопустимая опция -$OPTARG"
+      echo "Ошибка: неизвестный ключ -$OPTARG"
       exit 1
       ;;
   esac
@@ -47,18 +52,23 @@ check_work_dir() {
         echo "'$WORK_DIR' не путь к записям!"
         exit
     fi
+
+    if [[ "${WORK_DIR: -1}" == '/' ]]; then
+        result="${WORK_DIR:: -1}"
+    fi
 }
 
 check_work_dir
 
 input_file="0_содержание.txt"
 
+input_file="$WORK_DIR/$input_file"
+output_file="$WORK_DIR/$output_file"
+
 if [[ ! -e "$input_file" ]]; then
     echo "Описание содержания '$input_file' не найдено!"
     exit 1
 fi
-
-output_file="output.txt"
 
 > "$output_file"
 
@@ -68,8 +78,6 @@ function add_chapter() {
     echo "======================" >> "$output_file"
 }
 
-add_chapter
-
 while IFS= read -r filename; do
 
     if [[ -z "$filename" ]]; then
@@ -77,7 +85,7 @@ while IFS= read -r filename; do
         continue
     fi
 
-    file_path="$filename.txt"
+    file_path="$WORK_DIR/$filename.txt"
 
     if [[ -f "$file_path" ]]; then
         if [[ $SHOW_FILENAME -eq 1 ]]; then
@@ -85,6 +93,7 @@ while IFS= read -r filename; do
         fi
 
         cat "$file_path" >> "$output_file"
+        # СДЕЛАТЬ: для последней записи не добавлять пустую строку
         echo "" >> "$output_file"
     else
         echo "Файл не найден: $file_path" >&2

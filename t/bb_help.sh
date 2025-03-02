@@ -9,7 +9,7 @@ fi
 
 echo "1..5"
 
-NOT_CONTENT_RESULT="Описание содержания '0_содержание.txt' не найдено!"
+NOT_CONTENT_RESULT="Описание содержания './0_содержание.txt' не найдено!"
 
 RESULT=$(source build_book.sh -d asdf)
 assert "$RESULT" "'asdf' не путь к записям!" "asdf не путь"
@@ -25,7 +25,7 @@ HELP_RESULT="build_book.sh -- работа с записями.txt как с е�
 RESULT=$(source build_book.sh -h)
 assert "$RESULT" "$HELP_RESULT" "показ справки"
 
-VERSION=0.04
+VERSION=0.05
 VERSION_RESULT="build_book.sh $VERSION"
 
 RESULT=$(source build_book.sh -v)
