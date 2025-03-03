@@ -9,6 +9,8 @@ WORK_DIR='.'
 
 output_file="output.txt"
 
+TEX=0
+
 read -r -d '' HELP << 'END'
 build_book.sh -- работа с записями.txt как с единым целым.
 END
@@ -17,7 +19,7 @@ read -r -d '' VERSION_DESC << END
 build_book.sh $VERSION
 END
 
-while getopts ":hvsd:o:" opt; do
+while getopts ":hvsd:o:t" opt; do
   case $opt in
     h)
       echo $HELP
@@ -35,6 +37,9 @@ while getopts ":hvsd:o:" opt; do
       ;;
     o)
       output_file=$OPTARG
+      ;;
+    t)
+      TEX=1
       ;;
     \?)
       echo "Ошибка: неизвестный ключ -$OPTARG"
@@ -78,6 +83,14 @@ function add_chapter() {
     echo "======================" >> "$output_file"
 }
 
+if [[ $TEX -eq 1 ]]; then
+    TEX_DIR="$WORK_DIR/tex"
+
+    if [[ ! -d $TEX_DIR ]]; then
+        mkdir -p "$TEX_DIR/sections"
+    fi
+fi
+
 while IFS= read -r filename; do
 
     if [[ -z "$filename" ]]; then
@@ -87,12 +100,20 @@ while IFS= read -r filename; do
 
     file_path="$WORK_DIR/$filename.txt"
 
+    TEX_FILE_PATH="$WORK_DIR/tex/sections/$filename.tex"
+
     if [[ -f "$file_path" ]]; then
         if [[ $SHOW_FILENAME -eq 1 ]]; then
             echo -e "[$filename]:\n" >> "$output_file"
         fi
 
+
         cat "$file_path" >> "$output_file"
+
+        if [[ $TEX -eq 1 ]]; then
+            cp $file_path $TEX_FILE_PATH
+        fi
+
         # СДЕЛАТЬ: для последней записи не добавлять пустую строку
         echo "" >> "$output_file"
     else
